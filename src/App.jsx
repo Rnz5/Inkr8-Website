@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
+import { UserProvider, useUser } from './context/UserContext';
 
 // Pages
 import Login from './pages/Login';
@@ -8,6 +9,7 @@ import Home from './pages/Home';
 import Practice from './pages/Practice';
 import Writing from './pages/Writing';
 import Results from './pages/Results';
+import Profile from './pages/Profile';
 
 function AppLayout() {
   return (
@@ -29,21 +31,30 @@ function PageTitle({ title }) {
   );
 }
 
+function ProtectedRoute({ children }) {
+  const { isAuthenticated } = useUser();
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
+}
+
 export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<AppLayout />}>
-          <Route index element={<Home />} />
-          <Route path="practice" element={<Practice />} />
-          <Route path="practice/write" element={<Writing />} />
-          <Route path="practice/results" element={<Results />} />
-          
-          <Route path="profile" element={<PageTitle title="Profile" />} />
-          <Route path="settings" element={<PageTitle title="Settings" />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+            <Route index element={<Home />} />
+            <Route path="practice" element={<Practice />} />
+            <Route path="practice/write" element={<Writing />} />
+            <Route path="practice/results" element={<Results />} />
+            
+            <Route path="profile" element={<Profile />} />
+            <Route path="settings" element={<PageTitle title="Settings" />} />
+          </Route>
+          {/* Catch-all route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }

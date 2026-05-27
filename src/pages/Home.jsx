@@ -1,13 +1,19 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useUser();
 
   return (
     <div style={styles.container}>
       <header style={styles.header}>
-        <h1 style={styles.greeting}>Hello, Randy! 👋</h1>
+        <h1 style={styles.greeting}>Hello, {user.name}! 👋</h1>
+        <div style={styles.headerStats}>
+          <span className="badge-elo" style={styles.headerStatBadge}>🏆 {user.elo} ELO</span>
+          <span className="badge-merit" style={styles.headerStatBadge}>🪙 {user.merit.toLocaleString()} Merit</span>
+        </div>
       </header>
 
       {/* Word of the Moment Card */}
@@ -73,11 +79,26 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: '1rem',
   },
   greeting: {
-    fontSize: '2rem',
+    fontSize: '2.25rem',
     fontFamily: 'var(--font-display)',
-    fontWeight: '700',
+    fontWeight: '800',
+    letterSpacing: '-0.02em',
+  },
+  headerStats: {
+    display: 'flex',
+    gap: '0.75rem',
+  },
+  headerStatBadge: {
+    padding: '0.4rem 0.8rem',
+    fontSize: '0.85rem',
+    fontWeight: '600',
+    borderRadius: '6px',
+    display: 'inline-flex',
+    alignItems: 'center',
   },
   wordCard: {
     display: 'flex',
@@ -126,6 +147,7 @@ const styles = {
     padding: '0.5rem 1rem',
     fontSize: '0.85rem',
     cursor: 'pointer',
+    transition: 'var(--transition-smooth)',
   },
   quickActionsSection: {
     display: 'flex',
@@ -166,6 +188,7 @@ const styles = {
     fontSize: '0.9rem',
     lineHeight: '1.4',
     flex: 1,
+    textAlign: 'left',
   },
   actionFooter: {
     display: 'flex',
