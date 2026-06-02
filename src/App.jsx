@@ -2,14 +2,12 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import { UserProvider, useUser } from './context/UserContext';
-
-// Pages
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Practice from './pages/Practice';
-import Writing from './pages/Writing';
-import Results from './pages/Results';
-import Profile from './pages/Profile';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import PracticePage from './pages/PracticePage';
+import WritingPage from './pages/WritingPage';
+import ResultsPage from './pages/ResultsPage';
+import ProfilePage from './pages/ProfilePage';
 
 function AppLayout() {
   return (
@@ -18,15 +16,6 @@ function AppLayout() {
       <main className="main-content">
         <Outlet />
       </main>
-    </div>
-  );
-}
-
-function PageTitle({ title }) {
-  return (
-    <div>
-      <h1 style={{ fontFamily: 'var(--font-display)', marginBottom: '1rem' }}>{title}</h1>
-      <p style={{ color: 'var(--text-secondary)' }}>Welcome to your {title.toLowerCase()} panel.</p>
     </div>
   );
 }
@@ -41,17 +30,14 @@ export default function App() {
     <UserProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
-            <Route index element={<Home />} />
-            <Route path="practice" element={<Practice />} />
-            <Route path="practice/write" element={<Writing />} />
-            <Route path="practice/results" element={<Results />} />
-            
-            <Route path="profile" element={<Profile />} />
-            <Route path="settings" element={<PageTitle title="Settings" />} />
+            <Route index element={<HomePage />} />
+            <Route path="practice" element={<PracticePage />} />
+            <Route path="practice/write" element={<WritingPage />} />
+            <Route path="practice/results" element={<ResultsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Route>
-          {/* Catch-all route */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>

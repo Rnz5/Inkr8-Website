@@ -22,7 +22,6 @@ export default function Results() {
       </header>
 
       <div style={styles.resultsGrid}>
-        {/* Score Radial */}
         <section className="card" style={styles.scoreCard}>
           <span style={styles.sectionLabel}>YOUR SCORE</span>
           <div style={styles.radialWrapper}>
@@ -37,7 +36,6 @@ export default function Results() {
           </div>
         </section>
 
-        {/* Feedback text */}
         <section className="card" style={styles.feedbackCard}>
           <span style={styles.sectionLabel}>📝 FEEDBACK</span>
           <p style={styles.feedbackText}>
@@ -48,7 +46,6 @@ export default function Results() {
         </section>
       </div>
 
-      {/* Words Used summary */}
       <section className="card" style={styles.wordsCard}>
         <span style={styles.sectionLabel}>WORDS USED (3/4)</span>
         <div style={styles.wordsList}>
@@ -138,8 +135,8 @@ const styles = {
     fill: 'none',
     stroke: 'var(--accent-blue)',
     strokeWidth: '8',
-    strokeDasharray: '282.7', /* 2 * PI * r = 282.7 */
-    strokeDashoffset: '60.9', /* 282.7 * (1 - 0.7845) = 60.9 */
+    strokeDasharray: '282.7', 
+    strokeDashoffset: '60.9', 
     strokeLinecap: 'round',
   },
   scoreContent: {

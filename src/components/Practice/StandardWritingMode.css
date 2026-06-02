@@ -1,0 +1,51 @@
+.standard-writing-card {
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.standard-writing-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  background-color: #1b1d28;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-blue);
+  margin-bottom: 1rem;
+}
+
+.standard-writing-title {
+  font-size: 1.25rem;
+  font-family: var(--font-display);
+  margin-bottom: 0.5rem;
+}
+
+.standard-writing-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+.standard-writing-features {
+  list-style: none;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.standard-writing-select-btn {
+  width: 100%;
+}

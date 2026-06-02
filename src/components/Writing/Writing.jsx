@@ -20,7 +20,6 @@ export default function Writing() {
       </header>
 
       <div style={styles.workspace}>
-        {/* Words Row */}
         <div>
           <p style={styles.label}>Use these 4 words in your paragraph (not all are required)</p>
           <div style={styles.wordsList}>
@@ -32,14 +31,12 @@ export default function Writing() {
           </div>
         </div>
 
-        {/* Text Area */}
         <textarea
           placeholder="Start writing your paragraph here..."
           style={styles.textArea}
           rows={10}
         />
 
-        {/* Bottom row metrics */}
         <div style={styles.bottomRow}>
           <div className="card" style={styles.metricCard}>
             <span style={styles.metricLabel}>Word Count</span>

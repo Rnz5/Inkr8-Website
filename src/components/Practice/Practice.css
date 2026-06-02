@@ -1,0 +1,56 @@
+.practice-page {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 5rem);
+}
+
+.practice-back-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.practice-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-top: 1rem;
+}
+
+.practice-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.practice-title {
+  font-size: 1.75rem;
+  font-family: var(--font-display);
+}
+
+.practice-footer {
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1.25rem;
+  width: 100%;
+}
+
+.practice-free-text {
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.practice-helper-text {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}

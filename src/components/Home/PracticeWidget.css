@@ -1,0 +1,43 @@
+.practice-widget-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 150px;
+}
+
+.practice-widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.practice-widget-name {
+  font-size: 1.15rem;
+  font-family: var(--font-display);
+}
+
+.practice-widget-mark {
+  color: var(--accent-blue);
+  font-size: 0.8rem;
+  background-color: var(--accent-blue-transparent);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+  font-weight: 700;
+}
+
+.practice-widget-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.practice-widget-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../../context/UserContext';
 
-// Simple Crown Icon for Gold League
 const CrownIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style={{ color: 'var(--accent-gold)' }}>
     <path d="M12 2L16 8L22 6L19 18H5L2 6L8 8L12 2Z"/>
@@ -18,7 +17,6 @@ export default function Profile() {
     generateReputationReport 
   } = useUser();
 
-  // Local UI States
   const [isEditingUsername, setIsEditingUsername] = useState(false);
   const [newUsername, setNewUsername] = useState(user.name);
   const [usernameError, setUsernameError] = useState('');
@@ -29,7 +27,6 @@ export default function Profile() {
   const [activeSubmission, setActiveSubmission] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
-  // Custom Toast helper
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type });
     setTimeout(() => {
@@ -37,7 +34,6 @@ export default function Profile() {
     }, 3000);
   };
 
-  // Edit profile username
   const handleSaveUsername = () => {
     if (newUsername.length < 3) {
       setUsernameError('Min 3 characters required');
@@ -53,7 +49,6 @@ export default function Profile() {
     showToast('Username updated successfully!');
   };
 
-  // Expand cap
   const handleExpandCap = () => {
     const res = expandMeritCap();
     if (res.success) {
@@ -63,7 +58,6 @@ export default function Profile() {
     }
   };
 
-  // Pay Tax
   const handlePayTax = () => {
     const res = payWeeklyTax();
     if (res.success) {
@@ -73,7 +67,6 @@ export default function Profile() {
     }
   };
 
-  // Generate Reputation report
   const handleGenerateReport = () => {
     const res = generateReputationReport();
     if (res.success) {
@@ -95,7 +88,6 @@ export default function Profile() {
     }
   };
 
-  // Calculate league name based on ELO
   const getLeague = (elo) => {
     if (elo >= 1800) return { name: 'Master League', color: '#ec4899', progress: 100 };
     if (elo >= 1500) return { name: 'Platinum League', color: '#818cf8', progress: Math.min(100, Math.floor(((elo - 1500) / 300) * 100)) };
@@ -105,7 +97,6 @@ export default function Profile() {
 
   const league = getLeague(user.elo);
 
-  // Criteria ratings (mocked dynamic average from submission history)
   const averageCriteria = {
     Grammar: 81,
     Coherence: 78,
@@ -119,7 +110,6 @@ export default function Profile() {
 
   return (
     <div style={styles.container}>
-      {/* Toast Alert */}
       {toast.show && (
         <div style={{
           ...styles.toast,
@@ -134,10 +124,8 @@ export default function Profile() {
         <p style={styles.subtitle}>Manage your profile details and monitor writing statistics.</p>
       </header>
 
-      {/* Grid Layout */}
       <div style={styles.profileGrid}>
         
-        {/* Profile Card Header */}
         <div className="card" style={styles.userCard}>
           <div style={styles.userInfoWrapper}>
             <div style={styles.avatarContainer}>
@@ -188,10 +176,8 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* Gamified Stat Panels */}
         <div style={styles.statsGrid}>
           
-          {/* Card 1: ELO */}
           <div className="card" style={styles.statPanelCard}>
             <span style={styles.panelLabel}>RATING SYSTEM (ELO)</span>
             <div style={styles.panelMain}>
@@ -213,7 +199,6 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Card 2: Merit economy */}
           <div className="card" style={styles.statPanelCard}>
             <span style={styles.panelLabel}>INTERNAL ECONOMY (MERIT)</span>
             <div style={styles.panelMain}>
@@ -234,7 +219,6 @@ export default function Profile() {
             </div>
           </div>
 
-          {/* Card 3: Reputation */}
           <div className="card" style={styles.statPanelCard}>
             <span style={styles.panelLabel}>REPUTATION METER</span>
             <div style={styles.panelMain}>
@@ -249,7 +233,6 @@ export default function Profile() {
                 <span>Excellent (+1000)</span>
               </div>
               <div style={styles.sliderTrack}>
-                {/* Convert reputation to percentage slider [-1000, 1000] -> [0, 100] */}
                 <div 
                   style={{ 
                     ...styles.sliderPin, 
@@ -272,7 +255,6 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* Integrity Report Display */}
       {activeReport && (
         <section className="card" style={styles.reportSection}>
           <div style={styles.reportHeader}>
@@ -303,10 +285,8 @@ export default function Profile() {
         </section>
       )}
 
-      {/* Bottom Panel: AI criteria & Submissions */}
       <div style={styles.bottomGrid}>
         
-        {/* R8 AI Evaluation stats */}
         <section className="card" style={styles.criteriaCard}>
           <h3 style={styles.sectionTitle}>R8 AI EVALUATION STATS</h3>
           <p style={styles.sectionSubtitle}>Average score breakdown across key criteria.</p>
@@ -334,7 +314,6 @@ export default function Profile() {
           </div>
         </section>
 
-        {/* Submissions History */}
         <section className="card" style={styles.historyCard}>
           <h3 style={styles.sectionTitle}>SUBMISSIONS HISTORY</h3>
           <p style={styles.sectionSubtitle}>Review your completed paragraphs and R8 feedback.</p>
@@ -371,7 +350,6 @@ export default function Profile() {
 
       </div>
 
-      {/* Submission details popup Modal */}
       {activeSubmission && (
         <div className="modal-overlay" onClick={() => setActiveSubmission(null)}>
           <div className="modal-content" style={styles.submissionModal} onClick={(e) => e.stopPropagation()}>
@@ -385,7 +363,6 @@ export default function Profile() {
 
             <div style={styles.modalBody}>
               
-              {/* Score Display */}
               <div style={styles.modalScoreCard}>
                 <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-secondary)' }}>EVALUATION SCORE</span>
                 <span style={{ 
@@ -400,7 +377,6 @@ export default function Profile() {
                 </span>
               </div>
 
-              {/* Paragraph Text */}
               <div style={styles.paragraphBox}>
                 <h4 style={styles.modalSectionHeading}>Paragraph Content</h4>
                 <p style={styles.paragraphContent}>
@@ -408,7 +384,6 @@ export default function Profile() {
                 </p>
               </div>
 
-              {/* Targets Used */}
               <div style={styles.targetWordsBox}>
                 <h4 style={styles.modalSectionHeading}>Target Words Utilized</h4>
                 <div style={styles.wordPills}>
@@ -420,7 +395,6 @@ export default function Profile() {
                 </div>
               </div>
 
-              {/* AI Feedback */}
               <div style={styles.feedbackBox}>
                 <h4 style={styles.modalSectionHeading}>🤖 R8 AI Feedback</h4>
                 <p style={styles.feedbackContent}>
@@ -680,7 +654,6 @@ const styles = {
     padding: '0.5rem 1rem',
     fontSize: '0.8rem',
   },
-  // Integrity Report styling
   reportSection: {
     backgroundColor: 'rgba(59, 130, 246, 0.03)',
     border: '1px solid var(--accent-blue-transparent)',
@@ -731,7 +704,6 @@ const styles = {
     color: 'var(--text-secondary)',
     lineHeight: '1.4',
   },
-  // Bottom layouts
   bottomGrid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
@@ -814,7 +786,6 @@ const styles = {
     transition: 'var(--transition-smooth)',
   },
   historyRowHover: {
-    // handled via JS mouseEvents or CSS
   },
   historyInfo: {
     display: 'flex',
@@ -844,7 +815,6 @@ const styles = {
     color: 'var(--text-muted)',
     fontSize: '0.95rem',
   },
-  // Toast Alert
   toast: {
     position: 'fixed',
     top: '20px',
@@ -858,7 +828,6 @@ const styles = {
     fontWeight: '600',
     animation: 'slideUp 0.2s ease-out',
   },
-  // Submission details modal
   submissionModal: {
     maxWidth: '560px',
     maxHeight: '90vh',
@@ -963,9 +932,7 @@ const styles = {
     textAlign: 'left',
   },
 };
-// Add visual hover effects on lists directly in component
 styles.historyRow = {
   ...styles.historyRow,
   transition: 'var(--transition-smooth)',
 };
-// We can apply active class inline

@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../../context/UserContext';
 
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useUser();
   
-  // Local UI States
   const [isBtnLoading, setIsBtnLoading] = useState(false);
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
@@ -15,7 +14,6 @@ export default function Login() {
   const [usernameInput, setUsernameInput] = useState('');
   const [usernameFeedback, setUsernameFeedback] = useState('Available');
 
-  // Trigger loading state and then show Account Selector
   const handleGoogleClick = () => {
     setIsBtnLoading(true);
     setTimeout(() => {
@@ -24,18 +22,15 @@ export default function Login() {
     }, 1200);
   };
 
-  // Handle Account Selection
   const handleAccountSelect = (name, email) => {
     setSelectedName(name);
     setSelectedEmail(email);
-    // Prefill username input with clean initials/name format
     const cleanedName = name.replace(/\s+/g, '');
     setUsernameInput(cleanedName);
     setShowAccountSelector(false);
     setShowOnboarding(true);
   };
 
-  // Handle Username Input Change and Mock Validation
   const handleUsernameChange = (e) => {
     const val = e.target.value;
     setUsernameInput(val);
@@ -48,22 +43,18 @@ export default function Login() {
     }
   };
 
-  // Complete Onboarding & Route to Home
   const handleCompleteSetup = () => {
     if (usernameFeedback !== 'Available') return;
     
-    // Complete Context login
     login(usernameInput, selectedEmail);
     navigate('/');
   };
 
   return (
     <div style={styles.container}>
-      {/* Background Glow Orbs */}
       <div className="glow-orb" style={{ ...styles.orb1, width: '400px', height: '400px', backgroundColor: 'var(--accent-blue)', left: '-10%', top: '10%' }} />
       <div className="glow-orb" style={{ ...styles.orb2, width: '300px', height: '300px', backgroundColor: 'var(--accent-blue)', right: '10%', bottom: '10%' }} />
 
-      {/* Left Panel */}
       <div style={styles.leftPanel}>
         <div style={styles.brandContent}>
           <h1 style={styles.logo}>
@@ -75,7 +66,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Right Panel */}
       <div style={styles.rightPanel}>
         <div className="glass-panel" style={styles.loginCard}>
           <h2 style={styles.welcomeTitle}>Welcome back.</h2>
@@ -105,7 +95,6 @@ export default function Login() {
             <span style={styles.dividerLine} />
           </div>
 
-          {/* Dummy email login fields to add fidelity */}
           <div style={styles.dummyForm}>
             <input 
               type="text" 
@@ -132,7 +121,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Google Account Selector Modal */}
       {showAccountSelector && (
         <div className="modal-overlay">
           <div className="modal-content" style={styles.googleModal}>
@@ -148,7 +136,6 @@ export default function Login() {
             </div>
 
             <div style={styles.accountsList}>
-              {/* Option 1: Adrian Farfan */}
               <div 
                 onClick={() => handleAccountSelect('Adrian Farfan', 'adrianfarfan@aloe.ulima.edu.pe')}
                 style={styles.accountRow}
@@ -160,7 +147,6 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* Option 2: Use another account */}
               <div 
                 onClick={() => handleAccountSelect('Randy Writer', 'randy@inkr8.com')}
                 style={styles.accountRow}
@@ -184,7 +170,6 @@ export default function Login() {
         </div>
       )}
 
-      {/* Onboarding Username setup Modal */}
       {showOnboarding && (
         <div className="modal-overlay">
           <div className="modal-content" style={styles.onboardingModal}>
@@ -383,7 +368,6 @@ const styles = {
     color: 'var(--text-secondary)',
     textDecoration: 'underline',
   },
-  // Google Account Select Modal Styles
   googleModal: {
     maxWidth: '420px',
     backgroundColor: '#0a0d14',
@@ -449,7 +433,6 @@ const styles = {
     fontSize: '0.75rem',
     color: 'var(--text-secondary)',
   },
-  // Onboarding modal styles
   onboardingModal: {
     maxWidth: '440px',
   },
