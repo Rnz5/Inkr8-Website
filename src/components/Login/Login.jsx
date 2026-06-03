@@ -8,11 +8,12 @@ export default function Login() {
   
   const [isBtnLoading, setIsBtnLoading] = useState(false);
   const [showAccountSelector, setShowAccountSelector] = useState(false);
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [selectedEmail, setSelectedEmail] = useState('');
-  const [selectedName, setSelectedName] = useState('');
-  const [usernameInput, setUsernameInput] = useState('');
-  const [usernameFeedback, setUsernameFeedback] = useState('Available');
+  const accounts = [
+    { name: 'Adrian Farfan', email: 'adrianfarfan@aloe.ulima.edu.pe', initials: 'AF' },
+    { name: 'Matias Rodriguez', email: 'matias@inkr8.com', initials: 'MR' },
+    { name: 'Renzo Salazar', email: 'renzo@inkr8.com', initials: 'RS' },
+    { name: 'Andres Torres', email: 'andres@inkr8.com', initials: 'AT' },
+  ];
 
   const handleGoogleClick = () => {
     setIsBtnLoading(true);
@@ -23,31 +24,9 @@ export default function Login() {
   };
 
   const handleAccountSelect = (name, email) => {
-    setSelectedName(name);
-    setSelectedEmail(email);
-    const cleanedName = name.replace(/\s+/g, '');
-    setUsernameInput(cleanedName);
-    setShowAccountSelector(false);
-    setShowOnboarding(true);
-  };
-
-  const handleUsernameChange = (e) => {
-    const val = e.target.value;
-    setUsernameInput(val);
-    if (val.length < 3) {
-      setUsernameFeedback('Too short (min 3 chars)');
-    } else if (val.includes(' ') || val.includes('@')) {
-      setUsernameFeedback('No spaces or special symbols');
-    } else {
-      setUsernameFeedback('Available');
-    }
-  };
-
-  const handleCompleteSetup = () => {
-    if (usernameFeedback !== 'Available') return;
-    
-    login(usernameInput, selectedEmail);
+    login(name, email);
     navigate('/');
+    setShowAccountSelector(false);
   };
 
   return (
@@ -136,27 +115,19 @@ export default function Login() {
             </div>
 
             <div style={styles.accountsList}>
-              <div 
-                onClick={() => handleAccountSelect('Adrian Farfan', 'adrianfarfan@aloe.ulima.edu.pe')}
-                style={styles.accountRow}
-              >
-                <div style={styles.accountAvatar}>AF</div>
-                <div style={styles.accountDetails}>
-                  <span style={styles.accountName}>Adrian Farfan</span>
-                  <span style={styles.accountEmail}>adrianfarfan@aloe.ulima.edu.pe</span>
+              {accounts.map((account) => (
+                <div
+                  key={account.email}
+                  onClick={() => handleAccountSelect(account.name, account.email)}
+                  style={styles.accountRow}
+                >
+                  <div style={styles.accountAvatar}>{account.initials}</div>
+                  <div style={styles.accountDetails}>
+                    <span style={styles.accountName}>{account.name}</span>
+                    <span style={styles.accountEmail}>{account.email}</span>
+                  </div>
                 </div>
-              </div>
-
-              <div 
-                onClick={() => handleAccountSelect('Randy Writer', 'randy@inkr8.com')}
-                style={styles.accountRow}
-              >
-                <div style={{ ...styles.accountAvatar, backgroundColor: '#1a1e29' }}>R</div>
-                <div style={styles.accountDetails}>
-                  <span style={styles.accountName}>Randy Writer</span>
-                  <span style={styles.accountEmail}>randy@inkr8.com</span>
-                </div>
-              </div>
+              ))}
             </div>
 
             <button 
@@ -166,62 +137,6 @@ export default function Login() {
             >
               Cancel
             </button>
-          </div>
-        </div>
-      )}
-
-      {showOnboarding && (
-        <div className="modal-overlay">
-          <div className="modal-content" style={styles.onboardingModal}>
-            <div style={styles.onboardingHeader}>
-              <span style={styles.onboardingBadge}>Onboarding 1/1</span>
-              <h3 style={styles.onboardingTitle}>Setup your profile username</h3>
-              <p style={styles.onboardingSubtitle}>
-                Inkr8 requires a unique username for ratings and competitions. Choose yours below.
-              </p>
-            </div>
-
-            <div style={styles.onboardingBody}>
-              <div style={styles.inputContainer}>
-                <label style={styles.inputLabel}>Username</label>
-                <input 
-                  type="text" 
-                  value={usernameInput}
-                  onChange={handleUsernameChange}
-                  className="form-input" 
-                  placeholder="e.g. Adrian"
-                  maxLength={15}
-                />
-                <span 
-                  style={{
-                    ...styles.feedbackText,
-                    color: usernameFeedback === 'Available' ? 'var(--accent-green)' : 'var(--accent-red)'
-                  }}
-                >
-                  {usernameFeedback === 'Available' ? '✓ Username is available' : usernameFeedback}
-                </span>
-              </div>
-
-              <div style={styles.profilePreview}>
-                <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>PREVIEW PROFILE CARD</span>
-                <div style={styles.previewCard}>
-                  <div style={styles.previewAvatar}>AF</div>
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <span style={styles.previewName}>{usernameInput || 'YourName'}</span>
-                    <span style={styles.previewSubtitle}>League: Bronze • 🪙 1,250 Merit</span>
-                  </div>
-                </div>
-              </div>
-
-              <button 
-                onClick={handleCompleteSetup} 
-                className="btn-primary" 
-                style={{ width: '100%', marginTop: '1rem' }}
-                disabled={usernameFeedback !== 'Available'}
-              >
-                Complete Onboarding & Start
-              </button>
-            </div>
           </div>
         </div>
       )}

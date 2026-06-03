@@ -56,8 +56,8 @@ export function UserProvider({ children }) {
       ...prev,
       name: name || prev.name,
       email: email || prev.email,
-      // If logging in fresh, start with onboarding incomplete if not already completed
-      onboardingCompleted: prev.name !== 'Randy' ? prev.onboardingCompleted : false
+      // The login flow already completes onboarding in the login screen.
+      onboardingCompleted: true
     }));
     setIsAuthenticated(true);
   };
