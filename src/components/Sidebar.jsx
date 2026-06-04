@@ -58,13 +58,12 @@ export default function Sidebar() {
       <div style={styles.footer}>
         <div style={styles.userSummary}>
           <img
-            src={user.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'}
+            src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%231a1e29'/><circle cx='16' cy='12' r='5' fill='%233b82f6'/><path d='M6 26.5C6 21.5 10.5 18.5 16 18.5C21.5 18.5 26 21.5 26 26.5' stroke='%233b82f6' stroke-width='2.5' stroke-linecap='round'/></svg>"
             alt="Avatar"
             style={styles.userAvatar}
           />
           <div style={styles.userText}>
             <span style={styles.userName}>{user.name}</span>
-            <span style={styles.userMerit}>{user.merit.toLocaleString()} Merit</span>
           </div>
         </div>
         <button onClick={logout} style={styles.logoutBtn}>

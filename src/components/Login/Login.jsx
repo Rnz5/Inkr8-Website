@@ -9,10 +9,10 @@ export default function Login() {
   const [isBtnLoading, setIsBtnLoading] = useState(false);
   const [showAccountSelector, setShowAccountSelector] = useState(false);
   const accounts = [
-    { name: 'Adrian Farfan', email: 'adrianfarfan@aloe.ulima.edu.pe', initials: 'AF' },
-    { name: 'Matias Rodriguez', email: 'matias@inkr8.com', initials: 'MR' },
-    { name: 'Renzo Salazar', email: 'renzo@inkr8.com', initials: 'RS' },
-    { name: 'Andres Torres', email: 'andres@inkr8.com', initials: 'AT' },
+    { name: 'Adrian', email: 'adrian@inkr8.com', initials: 'AF' },
+    { name: 'Scrum Master', email: 'scrumaster@inkr8.com', initials: 'SM' },
+    { name: '2.236067977', email: '2.23606@inkr8.com', initials: '23' },
+    { name: 'Andres', email: 'andres@inkr8.com', initials: 'AP' },
   ];
 
   const handleGoogleClick = () => {
@@ -67,30 +67,6 @@ export default function Login() {
             )}
             {isBtnLoading ? 'Connecting...' : 'Continue with Google'}
           </button>
-
-          <div style={styles.dividerContainer}>
-            <span style={styles.dividerLine} />
-            <span style={styles.dividerText}>or</span>
-            <span style={styles.dividerLine} />
-          </div>
-
-          <div style={styles.dummyForm}>
-            <input 
-              type="text" 
-              placeholder="Username or email" 
-              style={styles.dummyInput} 
-              disabled 
-              title="Please use Continue with Google for this demo"
-            />
-            <button 
-              style={styles.dummyBtn} 
-              disabled 
-              title="Please use Continue with Google for this demo"
-            >
-              Log In
-            </button>
-          </div>
-
           <p style={styles.legalText}>
             By continuing, you agree to our{' '}
             <a href="#terms" style={styles.legalLink}>Terms of Service</a>{' '}

@@ -1,13 +1,16 @@
 import React from 'react';
 import PracticeWidget from './PracticeWidget';
 import WordOfMoment from './WordOfMoment';
+import { useUser } from '../../context/UserContext';
 import './Home.css';
 
 export default function Home() {
+  const { user } = useUser();
+
   return (
     <div className="home-container">
       <header className="home-header">
-        <h1 className="home-greeting">Hello, Randy!</h1>
+        <h1 className="home-greeting">Hello, {user.name}!</h1>
       </header>
 
       <WordOfMoment />

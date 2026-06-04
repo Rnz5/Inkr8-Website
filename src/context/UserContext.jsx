@@ -3,8 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const UserContext = createContext();
 
 const DEFAULT_USER = {
-  name: 'Randy',
-  email: 'randy@inkr8.com',
+  name: 'Default',
+  email: 'default@inkr8.com',
   avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
   merit: 1250,
   meritCap: 50000,
