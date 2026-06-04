@@ -1,8 +1,45 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './Results.css';
+
+const fallbackParagraph = 'Despite having little leeway in the negotiations, the lawyer presented a bulletproof argument. The opposing counsel was completely checkmated, unable to rely on simple causalism to explain away the clear evidence.';
+
+const feedbackOptions = [
+  'Your paragraph communicates the main idea clearly and keeps a steady rhythm from beginning to end. The required vocabulary feels natural, and the structure gives the response a polished academic tone.',
+  'The submission shows strong control of vocabulary and a confident sentence flow. To improve even more, add one or two sharper supporting details so the argument feels more vivid and memorable.',
+  'You used the target words in a coherent way and maintained a clean paragraph structure. The writing would become stronger with a slightly more expressive conclusion that reinforces the central idea.',
+];
+
+function getLatestSubmissionParagraph() {
+  const savedSubmission = localStorage.getItem('inkr8_latest_submission');
+
+  if (!savedSubmission) {
+    return fallbackParagraph;
+  }
+
+  try {
+    const parsedSubmission = JSON.parse(savedSubmission);
+    const paragraph = parsedSubmission?.paragraph;
+    return typeof paragraph === 'string' && paragraph.trim() ? paragraph : fallbackParagraph;
+  } catch {
+    return fallbackParagraph;
+  }
+}
+
+function generateRandomScore() {
+  return Number((Math.random() * 100).toFixed(2));
+}
 
 export default function Results() {
   const navigate = useNavigate();
+  const paragraph = useMemo(() => getLatestSubmissionParagraph(), []);
+  const score = useMemo(() => generateRandomScore(), []);
+  const feedback = useMemo(() => {
+    const randomIndex = Math.floor(Math.random() * feedbackOptions.length);
+    return feedbackOptions[randomIndex];
+  }, []);
+  const scoreOffset = 282.7 - (score / 100) * 282.7;
+
   const wordsUsed = [
     { word: 'Leeway', used: true },
     { word: 'Bulletproof', used: true },
@@ -11,177 +48,72 @@ export default function Results() {
   ];
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <button onClick={() => navigate('/')} style={styles.backBtn}>
-          ← Back to Home
-        </button>
-        <button onClick={() => navigate('/practice')} className="btn-primary">
-          Practice Again
-        </button>
-      </header>
+    <div className="results-page">
+      <button onClick={() => navigate('/')} className="results-back-btn">
+        Back to Home
+      </button>
 
-      <div style={styles.resultsGrid}>
-        <section className="card" style={styles.scoreCard}>
-          <span style={styles.sectionLabel}>YOUR SCORE</span>
-          <div style={styles.radialWrapper}>
-            <svg viewBox="0 0 100 100" style={styles.svg}>
-              <circle cx="50" cy="50" r="45" style={styles.circleBg} />
-              <circle cx="50" cy="50" r="45" style={styles.circleProgress} />
-            </svg>
-            <div style={styles.scoreContent}>
-              <h2 style={styles.scoreNumber}>78.45%</h2>
-              <span style={styles.scoreSub}>Good Job!</span>
+      <div className="results-container">
+        <header className="results-header">
+          <div />
+          <button onClick={() => navigate('/practice')} className="btn-primary">
+            Practice Again
+          </button>
+        </header>
+
+        <div className="results-grid">
+          <section className="card results-score-card">
+            <span className="results-section-label">YOUR SCORE</span>
+            <div className="results-radial-wrapper">
+              <svg viewBox="0 0 100 100" className="results-score-svg">
+                <circle cx="50" cy="50" r="45" className="results-circle-bg" />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  className="results-circle-progress"
+                  style={{ strokeDashoffset: scoreOffset }}
+                />
+              </svg>
+              <div className="results-score-content">
+                <h2 className="results-score-number">{score.toFixed(2)}%</h2>
+                <span className="results-score-sub">Good Job!</span>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="card" style={styles.feedbackCard}>
-          <span style={styles.sectionLabel}>📝 FEEDBACK</span>
-          <p style={styles.feedbackText}>
-            Your paragraph communicates your ideas well and maintains good structure throughout.
-            You used the given words naturally, which strengthens the flow. Keep working on
-            adding more vivid details to make your writing even more engaging.
+          <section className="card results-feedback-card">
+            <span className="results-section-label">FEEDBACK</span>
+            <p className="results-feedback-text">
+              {feedback}
+            </p>
+          </section>
+        </div>
+
+        <section className="card results-paragraph-card">
+          <span className="results-section-label">YOUR PARAGRAPH</span>
+          <p className="results-submission-paragraph">
+            {paragraph}
           </p>
         </section>
-      </div>
 
-      <section className="card" style={styles.wordsCard}>
-        <span style={styles.sectionLabel}>WORDS USED (3/4)</span>
-        <div style={styles.wordsList}>
-          {wordsUsed.map((item) => (
-            <div
-              key={item.word}
-              style={{
-                ...styles.wordItem,
-                borderColor: item.used ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)',
-              }}
-            >
-              <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{item.word}</span>
-              <span
-                style={{
-                  color: item.used ? 'var(--accent-green)' : 'var(--accent-red)',
-                  fontWeight: '700',
-                }}
+        <section className="card results-words-card">
+          <span className="results-section-label">WORDS USED (3/4)</span>
+          <div className="results-words-list">
+            {wordsUsed.map((item) => (
+              <div
+                key={item.word}
+                className={`results-word-item ${item.used ? 'results-word-item-used' : 'results-word-item-unused'}`}
               >
-                {item.used ? '✓' : '✗'}
-              </span>
-            </div>
-          ))}
-        </div>
-      </section>
+                <span className="results-word-text">{item.word}</span>
+                <span className={item.used ? 'results-word-status-used' : 'results-word-status-unused'}>
+                  {item.used ? 'Yes' : 'No'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem',
-    maxWidth: '800px',
-    margin: '0 auto',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  backBtn: {
-    background: 'none',
-    border: 'none',
-    color: 'var(--text-secondary)',
-    cursor: 'pointer',
-    fontSize: '0.9rem',
-  },
-  resultsGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1.5fr',
-    gap: '1.25rem',
-  },
-  scoreCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '1rem',
-    padding: '1.5rem',
-  },
-  sectionLabel: {
-    alignSelf: 'flex-start',
-    fontSize: '0.7rem',
-    fontWeight: '700',
-    color: 'var(--text-secondary)',
-    letterSpacing: '0.05em',
-  },
-  radialWrapper: {
-    position: 'relative',
-    width: '140px',
-    height: '140px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  svg: {
-    width: '100%',
-    height: '100%',
-    transform: 'rotate(-90deg)',
-  },
-  circleBg: {
-    fill: 'none',
-    stroke: 'var(--border-color)',
-    strokeWidth: '8',
-  },
-  circleProgress: {
-    fill: 'none',
-    stroke: 'var(--accent-blue)',
-    strokeWidth: '8',
-    strokeDasharray: '282.7', 
-    strokeDashoffset: '60.9', 
-    strokeLinecap: 'round',
-  },
-  scoreContent: {
-    position: 'absolute',
-    textAlign: 'center',
-  },
-  scoreNumber: {
-    fontSize: '1.5rem',
-    fontFamily: 'var(--font-display)',
-    fontWeight: '800',
-  },
-  scoreSub: {
-    fontSize: '0.75rem',
-    color: 'var(--accent-blue)',
-    fontWeight: '600',
-  },
-  feedbackCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    gap: '1rem',
-    padding: '1.5rem',
-  },
-  feedbackText: {
-    color: 'var(--text-secondary)',
-    fontSize: '0.95rem',
-    lineHeight: '1.6',
-  },
-  wordsCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-  wordsList: {
-    display: 'flex',
-    gap: '0.5rem',
-    flexWrap: 'wrap',
-  },
-  wordItem: {
-    backgroundColor: 'var(--bg-primary)',
-    border: '1px solid',
-    borderRadius: '6px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.5rem',
-    padding: '0.5rem 1rem',
-  },
-};
