@@ -1,51 +1,51 @@
 import React, { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './Results.css';
 
-const fallbackParagraph = 'Despite having little leeway in the negotiations, the lawyer presented a bulletproof argument. The opposing counsel was completely checkmated, unable to rely on simple causalism to explain away the clear evidence.';
+function getSubmissionData(locationState) {
+  if (locationState?.paragraph) return locationState;
 
-const feedbackOptions = [
-  'Your paragraph communicates the main idea clearly and keeps a steady rhythm from beginning to end. The required vocabulary feels natural, and the structure gives the response a polished academic tone.',
-  'The submission shows strong control of vocabulary and a confident sentence flow. To improve even more, add one or two sharper supporting details so the argument feels more vivid and memorable.',
-  'You used the target words in a coherent way and maintained a clean paragraph structure. The writing would become stronger with a slightly more expressive conclusion that reinforces the central idea.',
-];
-
-function getLatestSubmissionParagraph() {
-  const savedSubmission = localStorage.getItem('inkr8_latest_submission');
-
-  if (!savedSubmission) {
-    return fallbackParagraph;
-  }
+  const saved = localStorage.getItem('inkr8_latest_submission');
+  if (!saved) return null;
 
   try {
-    const parsedSubmission = JSON.parse(savedSubmission);
-    const paragraph = parsedSubmission?.paragraph;
-    return typeof paragraph === 'string' && paragraph.trim() ? paragraph : fallbackParagraph;
+    const parsed = JSON.parse(saved);
+    return parsed?.paragraph ? parsed : null;
   } catch {
-    return fallbackParagraph;
+    return null;
   }
-}
-
-function generateRandomScore() {
-  return Number((Math.random() * 100).toFixed(2));
 }
 
 export default function Results() {
   const navigate = useNavigate();
-  const paragraph = useMemo(() => getLatestSubmissionParagraph(), []);
-  const score = useMemo(() => generateRandomScore(), []);
-  const feedback = useMemo(() => {
-    const randomIndex = Math.floor(Math.random() * feedbackOptions.length);
-    return feedbackOptions[randomIndex];
-  }, []);
-  const scoreOffset = 282.7 - (score / 100) * 282.7;
+  const location = useLocation();
+  const data = useMemo(() => getSubmissionData(location.state), [location.state]);
 
-  const wordsUsed = [
-    { word: 'Leeway', used: true },
-    { word: 'Bulletproof', used: true },
-    { word: 'Checkmated', used: true },
-    { word: 'Causalism', used: false },
-  ];
+  if (!data) {
+    return (
+      <div className="results-page">
+        <button onClick={() => navigate('/')} className="results-back-btn">
+          Back to Home
+        </button>
+        <div className="results-container">
+          <section className="card results-paragraph-card">
+            <span className="results-section-label">NO RESULTS YET</span>
+            <p className="results-submission-paragraph">
+              You haven't submitted a practice yet. Head over to Practice and write a paragraph first.
+            </p>
+            <button onClick={() => navigate('/practice')} className="btn-primary">
+              Go to Practice
+            </button>
+          </section>
+        </div>
+      </div>
+    );
+  }
+
+  const { paragraph, feedback, allWords = [], wordsUsed = [] } = data;
+  const score = Number(data.score) || 0;
+  const scoreOffset = 282.7 - (score / 100) * 282.7;
+  const wordsList = allWords.map((word) => ({ word, used: wordsUsed.includes(word) }));
 
   return (
     <div className="results-page">
@@ -98,9 +98,9 @@ export default function Results() {
         </section>
 
         <section className="card results-words-card">
-          <span className="results-section-label">WORDS USED (3/4)</span>
+          <span className="results-section-label">WORDS USED ({wordsUsed.length}/{allWords.length})</span>
           <div className="results-words-list">
-            {wordsUsed.map((item) => (
+            {wordsList.map((item) => (
               <div
                 key={item.word}
                 className={`results-word-item ${item.used ? 'results-word-item-used' : 'results-word-item-unused'}`}

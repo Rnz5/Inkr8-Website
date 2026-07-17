@@ -10,4 +10,7 @@ export const submissionsAPI = {
   async getAll() {
     return apiCall('/submissions');
   },
+  async remove(id) {
+    return apiCall(`/submissions/${id}`, { method: 'DELETE' });
+  },
 };

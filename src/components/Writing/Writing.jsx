@@ -2,12 +2,25 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { wordsAPI } from '../../api/words.js';
 import { tipsAPI } from '../../api/tips.js';
+import { useUser } from '../../context/UserContext.jsx';
 import './Writing.css';
+
+function scoreFeedback(score) {
+  if (score >= 85) {
+    return 'Your paragraph communicates the main idea clearly and keeps a steady rhythm from beginning to end. The required vocabulary feels natural, and the structure gives the response a polished academic tone.';
+  }
+  if (score >= 70) {
+    return 'The submission shows strong control of vocabulary and a confident sentence flow. To improve even more, add one or two sharper supporting details so the argument feels more vivid and memorable.';
+  }
+  return 'You used the target words in a coherent way and maintained a clean paragraph structure. The writing would become stronger with a slightly more expressive conclusion that reinforces the central idea.';
+}
 
 export default function Writing() {
   const navigate = useNavigate();
+  const { addSubmission } = useUser();
   const textareaRef = useRef(null);
   const backdropRef = useRef(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const [selectedWords, setSelectedWords] = useState([]);
   const [tip, setTip] = useState('');
@@ -89,20 +102,35 @@ export default function Writing() {
     return html;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+
     const wordsUsed = selectedWords
       .filter(w => isWordUsed(w.word))
       .map(w => w.word);
+    const allWords = selectedWords.map(w => w.word);
+    const count = getWordCount(paragraph);
 
-    const submissionData = {
-      paragraph,
-      selectedWords: selectedWords.map(w => w.word),
-      usedWords: wordsUsed,
-      wordCount: getWordCount(paragraph)
-    };
+    const baseScore = 65;
+    const wordBonus = Math.min(15, Math.floor((count / 150) * 15));
+    const targetWordBonus = wordsUsed.length * 5;
+    const variance = Math.floor(Math.random() * 6);
+    const score = Math.min(100, baseScore + wordBonus + targetWordBonus + variance);
+    const feedback = scoreFeedback(score);
 
-    localStorage.setItem('inkr8_latest_submission', JSON.stringify(submissionData));
-    navigate('/practice/results');
+    let submission;
+    try {
+      const result = await addSubmission('Standard Writing', paragraph, score, wordsUsed, feedback);
+      submission = result.submission;
+    } catch (err) {
+      console.error('Failed to save submission:', err);
+      submission = { paragraph, score, wordsUsed, feedback };
+    }
+
+    const resultData = { ...submission, allWords };
+    localStorage.setItem('inkr8_latest_submission', JSON.stringify(resultData));
+    navigate('/practice/results', { state: resultData });
   };
 
   const wordCount = getWordCount(paragraph);
@@ -118,8 +146,8 @@ export default function Writing() {
           </button>
           <h1 className="writing-title">Standard Writing</h1>
         </div>
-        <button onClick={handleSubmit} className="btn-primary">
-          Submit
+        <button onClick={handleSubmit} className="btn-primary" disabled={submitting}>
+          {submitting ? 'Submitting...' : 'Submit'}
         </button>
       </header>
 

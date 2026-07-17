@@ -21,7 +21,16 @@ function AppLayout() {
 }
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useUser();
+  const { isAuthenticated, loading } = useUser();
+
+  if (loading) {
+    return (
+      <div style={{ display: 'grid', placeItems: 'center', height: '100vh' }}>
+        Loading...
+      </div>
+    );
+  }
+
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }
 
