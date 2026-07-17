@@ -1,4 +1,4 @@
-const API_BASE = 'https://inkr8-api.vercel.app';
+const API_BASE = 'https://inkr8-backend.vercel.app';
 
 export async function apiCall(endpoint, options = {}) {
   const token = localStorage.getItem('inkr8_token');
