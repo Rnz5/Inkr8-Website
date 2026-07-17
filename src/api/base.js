@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE = 'https://inkr8-api.vercel.app';
 
 export async function apiCall(endpoint, options = {}) {
   const token = localStorage.getItem('inkr8_token');
