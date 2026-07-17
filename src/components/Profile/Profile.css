@@ -1,0 +1,117 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.profile-title {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.profile-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.profile-card {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--accent-blue-transparent);
+  color: var(--accent-blue);
+  font-weight: 800;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.profile-user-name {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.profile-edit-btn {
+  border: none;
+  background: transparent;
+  color: var(--accent-blue);
+  cursor: pointer;
+  padding: 0;
+}
+
+.profile-edit-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.profile-input {
+  min-width: 220px;
+}
+
+.profile-error {
+  margin: 0;
+  color: var(--accent-red);
+  font-size: 0.9rem;
+}
+
+.profile-email {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.profile-notes-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.profile-section-title {
+  margin: 0;
+}
+
+.profile-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.profile-list-item {
+  line-height: 1.5;
+}
+
+.profile-logout-btn {
+  align-self: flex-start;
+}

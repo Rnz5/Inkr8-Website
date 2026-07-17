@@ -1,28 +1,14 @@
-import React, { useState } from 'react';
-import words from '../../data/words';
+import React, { useState, useEffect } from 'react';
+import { wordsAPI } from '../../api/words.js';
 import './WordOfMoment.css';
 
-function getWordOfMoment() {
-  const wordOptions = words.map((word, index) => ({ ...word, index }));
-
-  if (wordOptions.length === 0) {
-    return null;
-  }
-
-  const previousIndex = Number(localStorage.getItem('inkr8_word_index'));
-  let nextIndex = Math.floor(Math.random() * wordOptions.length);
-
-  if (wordOptions.length > 1 && nextIndex === previousIndex) {
-    nextIndex = (nextIndex + 1) % wordOptions.length;
-  }
-
-  localStorage.setItem('inkr8_word_index', String(nextIndex));
-  return wordOptions[nextIndex];
-}
-
 export default function WordOfMoment() {
-  const [word] = useState(getWordOfMoment);
+  const [word, setWord] = useState(null);
   const [showExample, setShowExample] = useState(false);
+
+  useEffect(() => {
+    wordsAPI.getRandom().then(setWord).catch(() => setWord(null));
+  }, []);
 
   if (!word) {
     return null;

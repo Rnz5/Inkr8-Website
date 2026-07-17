@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import wordsList from '../../data/words';
-import tipsList from '../../data/tips.json';
+import { wordsAPI } from '../../api/words.js';
+import { tipsAPI } from '../../api/tips.js';
 import './Writing.css';
 
 export default function Writing() {
@@ -9,15 +9,17 @@ export default function Writing() {
   const textareaRef = useRef(null);
   const backdropRef = useRef(null);
 
-  const [selectedWords] = useState(() => {
-    const shuffled = [...wordsList].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 4);
-  });
+  const [selectedWords, setSelectedWords] = useState([]);
+  const [tip, setTip] = useState('');
 
-  const [tip] = useState(() => {
-    const randomIndex = Math.floor(Math.random() * tipsList.length);
-    return tipsList[randomIndex];
-  });
+  useEffect(() => {
+    wordsAPI.getAll().then((allWords) => {
+      const shuffled = [...allWords].sort(() => 0.5 - Math.random());
+      setSelectedWords(shuffled.slice(0, 4));
+    }).catch(() => setSelectedWords([]));
+
+    tipsAPI.getRandom().then((t) => setTip(t?.content || '')).catch(() => setTip(''));
+  }, []);
 
   const [paragraph, setParagraph] = useState('');
   const [activeWord, setActiveWord] = useState(null);
@@ -162,8 +164,8 @@ export default function Writing() {
           <div className="card metric-card">
             <span className="metric-label">Word Count</span>
             <div className="metric-value">
-              <span style={{ fontSize: '1.25rem', fontWeight: '700' }}>{wordCount}</span>
-              <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}> / 150 words</span>
+              <span className="word-count-value">{wordCount}</span>
+              <span className="word-count-max"> / 150 words</span>
             </div>
             <div className="progress-bar">
               <div

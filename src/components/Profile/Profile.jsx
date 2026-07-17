@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useUser } from '../../context/UserContext';
+import './Profile.css';
 
 export default function Profile() {
   const { user, updateUsername, logout } = useUser();
@@ -36,23 +37,22 @@ export default function Profile() {
   ];
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <h1 style={styles.title}>Profile</h1>
-        <p style={styles.subtitle}>Basic user information and account access.</p>
+    <div className="profile-container">
+      <header className="profile-header">
+        <h1 className="profile-title">Profile</h1>
+        <p className="profile-subtitle">Basic user information and account access.</p>
       </header>
 
-      <section className="card" style={styles.profileCard}>
-        <div style={styles.avatar}>{initials}</div>
-        <div style={styles.info}>
-          <div style={styles.nameRow}>
+      <section className="card profile-card">
+        <div className="profile-avatar">{initials}</div>
+        <div className="profile-info">
+          <div className="profile-name-row">
             {isEditing ? (
-              <div style={styles.editRow}>
+              <div className="profile-edit-row">
                 <input
-                  className="form-input"
+                  className="form-input profile-input"
                   value={draftName}
                   onChange={(e) => setDraftName(e.target.value)}
-                  style={styles.input}
                   maxLength={20}
                 />
                 <button className="btn-primary" onClick={handleSave}>Save</button>
@@ -62,130 +62,28 @@ export default function Profile() {
               </div>
             ) : (
               <>
-                <h2 style={styles.userName}>{user.name}</h2>
-                <button style={styles.editBtn} onClick={() => setIsEditing(true)}>Edit</button>
+                <h2 className="profile-user-name">{user.name}</h2>
+                <button className="profile-edit-btn" onClick={() => setIsEditing(true)}>Edit</button>
               </>
             )}
           </div>
-          {error && <p style={styles.error}>{error}</p>}
-          <p style={styles.email}>{user.email}</p>
+          {error && <p className="profile-error">{error}</p>}
+          <p className="profile-email">{user.email}</p>
         </div>
       </section>
 
-      <section className="card" style={styles.notesCard}>
-        <h3 style={styles.sectionTitle}>Account Notes</h3>
-        <ul style={styles.list}>
+      <section className="card profile-notes-card">
+        <h3 className="profile-section-title">Account Notes</h3>
+        <ul className="profile-list">
           {recentNotes.map((note) => (
-            <li key={note} style={styles.listItem}>{note}</li>
+            <li key={note} className="profile-list-item">{note}</li>
           ))}
         </ul>
       </section>
 
-      <button className="btn-secondary" onClick={logout} style={styles.logoutBtn}>
+      <button className="btn-secondary profile-logout-btn" onClick={logout}>
         Sign Out
       </button>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1.5rem',
-    padding: '1rem 0'
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.35rem'
-  },
-  title: {
-    margin: 0,
-    fontSize: '2rem'
-  },
-  subtitle: {
-    margin: 0,
-    color: 'var(--text-secondary)'
-  },
-  profileCard: {
-    display: 'flex',
-    gap: '1rem',
-    alignItems: 'center'
-  },
-  avatar: {
-    width: '72px',
-    height: '72px',
-    borderRadius: '50%',
-    display: 'grid',
-    placeItems: 'center',
-    background: 'var(--accent-blue-transparent)',
-    color: 'var(--accent-blue)',
-    fontWeight: '800',
-    fontSize: '1.5rem',
-    flexShrink: 0
-  },
-  info: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.35rem',
-    flex: 1
-  },
-  nameRow: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '0.75rem',
-    flexWrap: 'wrap'
-  },
-  userName: {
-    margin: 0,
-    fontSize: '1.4rem'
-  },
-  editBtn: {
-    border: 'none',
-    background: 'transparent',
-    color: 'var(--accent-blue)',
-    cursor: 'pointer',
-    padding: 0
-  },
-  editRow: {
-    display: 'flex',
-    gap: '0.5rem',
-    flexWrap: 'wrap',
-    alignItems: 'center'
-  },
-  input: {
-    minWidth: '220px'
-  },
-  error: {
-    margin: 0,
-    color: 'var(--accent-red)',
-    fontSize: '0.9rem'
-  },
-  email: {
-    margin: 0,
-    color: 'var(--text-secondary)'
-  },
-  notesCard: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.75rem'
-  },
-  sectionTitle: {
-    margin: 0
-  },
-  list: {
-    margin: 0,
-    paddingLeft: '1.2rem',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    color: 'var(--text-secondary)'
-  },
-  listItem: {
-    lineHeight: 1.5
-  },
-  logoutBtn: {
-    alignSelf: 'flex-start'
-  }
-};

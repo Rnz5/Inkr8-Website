@@ -295,3 +295,13 @@
   align-self: flex-end;
   margin-top: 0.5rem;
 }
+
+.word-count-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.word-count-max {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
