@@ -30,23 +30,6 @@ export default function HistoryWidget() {
             </div>
           </div>
         ))}
-        {submissions.map((submission) => (
-          <div key={submission.id} className="card history-widget-card">
-            <div className="history-widget-header">
-              <h4 className="history-widget-name">{ submission.type }</h4>
-              <span className="history-widget-mark">{ submission.score }</span>
-            </div>
-            <p className="history-widget-desc">
-              { submission.wordsUsed.map((word, key) => <span key={key} className='word'>{word}</span>) }
-            </p>
-            <p className="history-widget-review">
-              { submission.paragraph.length > 200 ? submission.paragraph.slice(0, 200) + '...' : submission.paragraph }
-            </p>
-            <div className="history-widget-footer">
-              <span>{ new Date(submission.updatedAt).toLocaleDateString() }</span>
-            </div>
-          </div>
-        ))}
       </div>
     </section>
   );
