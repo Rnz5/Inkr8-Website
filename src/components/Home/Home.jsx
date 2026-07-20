@@ -1,4 +1,5 @@
 import React from 'react';
+import HistoryWidget from './HistoryWidget';
 import PracticeWidget from './PracticeWidget';
 import WordOfMoment from './WordOfMoment';
 import { useUser } from '../../context/UserContext';
@@ -21,6 +22,8 @@ export default function Home() {
           <PracticeWidget />
         </div>
       </section>
+
+      <HistoryWidget />
     </div>
   );
 }
